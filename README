@@ -1,0 +1,19 @@
+Scans a directory
+
+Groups files by type, size, and folder
+
+filesystem traversal
+
+performance
+
+data aggregation
+
+diffs between runs
+
+Cache previous scan
+
+Show growth over time
+
+Export JSON
+
+Simple TUI or GUI later
