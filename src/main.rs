@@ -2,10 +2,7 @@ use clap::{Parser, Subcommand};
 extern crate fs_extra;
 use fs_extra::dir::get_size;
 use libc::statvfs;
-use std::ffi::CString;
-use std::fs;
-use std::path::Path;
-use std::path::PathBuf;
+use std::{ffi::CString, fs, path::Path, path::PathBuf};
 
 #[derive(Parser, Clone)]
 #[command(version, about = "Inspects file metadata")]
