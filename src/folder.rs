@@ -177,16 +177,17 @@ pub fn run_dir(path: &PathBuf, detail: bool) -> anyhow::Result<()> {
         let (colored_size, kind) = get_entry_color(&size_str, info.is_dir);
 
         let ratio = info.size as f64 / max_size as f64;
+        let (filled_bar, empty_bar) = create_bar(ratio, bar_total_width);
         
-        let colored_bar = if size_str.ends_with("TB") || size_str.ends_with("GB") {
-            create_bar(ratio, bar_total_width).red()
+        let colored_filled = if size_str.ends_with("TB") || size_str.ends_with("GB") {
+            filled_bar.red()
         } else if size_str.ends_with("MB") {
-            create_bar(ratio, bar_total_width).yellow()
+            filled_bar.yellow()
         } else {
-            create_bar(ratio, bar_total_width).cyan()
+            filled_bar.cyan()
         };
 
-        println!("{}  {}  {}  {}", colored_size, kind, colored_bar, info.name);
+        println!("{}  {}  {}{}{}  {}", colored_size, kind, colored_filled, empty_bar.dimmed(), " ", info.name);
     }
 
     Ok(())

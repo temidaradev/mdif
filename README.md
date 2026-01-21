@@ -14,7 +14,7 @@ A terminal-based disk usage analyzer written in Rust. It helps identify storage 
 
 ## Installation
 
-### Method 1: Cargo Install (Recommended)
+### Method 1: Cargo Install
 This is the easiest method if you have Rust installed. It downloads the package from crates.io and installs the binary to your path.
 
 ```bash
@@ -51,8 +51,32 @@ wthmdif folder /path/to/directory
 -   **Path**: `/home/user/Projects`
 -   **Total Size**: `45.2 GB`
 -   **List**:
-    -   `DIR  ████████████  node_modules  (2.5 GB)`
-    -   `FILE ░░░░░░        backup.zip    (500 MB)`
+    -   `DIR  ████████████  target  (625.53 MB)`
+    -   `FILE ░░░░░░        Cargo.lock    (12.34 KB)`
+
+there is also a --detail flag but it wouldnt be really efficient to use in large folders. 
+
+```bash
+wthmdif folder --detail /path/to/directory
+```
+
+**Output:**
+-   **Path**: `~/Documents/wthmdif/`
+-   **Total Size**: `625.59 MB`
+-   625.53 MB  DIR   "./target"
+    522.00 MB  DIR   "./target/debug"
+    262.70 MB  DIR   "./target/debug/deps"
+    175.95 MB  DIR   "./target/debug/incremental"
+    103.46 MB  DIR   "./target/release"
+    89.88 MB  DIR   "./target/release/deps"
+    59.72 MB  DIR   "./target/debug/build"
+    36.48 MB  DIR   "./target/debug/incremental/wthmdif-38smkiffafzkx"
+    35.99 MB  DIR   "./target/debug/incremental/wthmdif-2df0ema320six"
+    35.29 MB  DIR   "./target/debug/incremental/wthmdif-27z9hk543syj4"
+    23.54 MB  FILE  "./target/debug/deps/wthmdif-2c66bb95d694d2b8"
+    23.54 MB  FILE  "./target/debug/wthmdif"
+
+and this goes on....
 
 ### 2. Disk Usage
 Get a summary of the disk partition hosting the specific path.
@@ -60,6 +84,13 @@ Get a summary of the disk partition hosting the specific path.
 ```bash
 wthmdif disk /
 ```
+
+an example for disk mounted on /mnt
+
+```bash
+wthmdif disk /mnt/your-disk/
+```
+
 
 **Visuals:**
 -   Displays Total, Used, and Free space.
@@ -73,9 +104,8 @@ wthmdif disk /
 | `disk` | `<path>` | Shows filesystem usage stats (total/used/free) for the partition containing the path. |
 | `--help` | | Shows the help message. |
 
-## Tech Stack
+## Stuff
 
--   **Rust**: Performance and safety.
 -   **jwalk**: Parallel directory traversal.
 -   **colored**: Terminal output coloring.
 -   **indicatif**: Progress bars and status indicators.

@@ -32,17 +32,21 @@ pub fn run_disk(path: &Path) -> anyhow::Result<()> {
 
     let bar_width: usize = 40;
     
-    let colored_bar = if percent > 85.0 {
-        crate::utils::create_bar(percent / 100.0, bar_width).red()
+    let (filled_bar, empty_bar) = crate::utils::create_bar(percent / 100.0, bar_width);
+
+    let colored_filled = if percent > 85.0 {
+        filled_bar.red()
     } else if percent > 60.0 {
-         crate::utils::create_bar(percent / 100.0, bar_width).yellow()
+         filled_bar.yellow()
     } else {
-         crate::utils::create_bar(percent / 100.0, bar_width).green()
+         filled_bar.green()
     };
 
     println!(
-        "\n{}  {:.2}%",
-        colored_bar,
+        "\n{}{}{}  {:.2}%",
+        colored_filled,
+        empty_bar.dimmed(),
+        " ", // Space
         percent
     );
 

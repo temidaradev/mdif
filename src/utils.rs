@@ -15,7 +15,6 @@ pub fn human_size(bytes: u64) -> String {
 }
 
 pub fn is_system_dir(path: &Path) -> bool {
-    // Only verify strictly top-level system directories
     if let Some(parent) = path.parent() {
         if parent == Path::new("/") {
             if let Some(name) = path.file_name() {
@@ -43,36 +42,28 @@ pub fn get_entry_color(size_str: &str, is_dir: bool) -> (colored::ColoredString,
     (colored_size, kind)
 }
 
-pub fn create_bar(percent: f64, width: usize) -> String {
+pub fn create_bar(percent: f64, width: usize) -> (String, String) {
     let fractional_blocks = [" ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█"];
     let filled_width = (percent * width as f64).round();
     let full_blocks = (filled_width.floor() as usize).min(width);
     
-    let mut bar = String::with_capacity(width);
+    let mut filled = String::with_capacity(width);
     
-    // Add full blocks
     for _ in 0..full_blocks {
-        bar.push_str(fractional_blocks[8]);
+        filled.push_str(fractional_blocks[8]);
     }
     
-    // Add fractional part if strictly less than width (and non-zero remainder)
     if full_blocks < width {
         let remainder = filled_width - full_blocks as f64;
         let index = (remainder * 8.0).round() as usize;
         if index > 0 {
-             bar.push_str(fractional_blocks[index]);
-        } else {
-             bar.push_str(fractional_blocks[0]); // Space for empty
+             filled.push_str(fractional_blocks[index]);
         }
     }
 
-    // Pad with spaces
-    let current_len = bar.chars().count();
-    if current_len < width {
-        for _ in 0..(width - current_len) {
-            bar.push_str(fractional_blocks[0]);
-        }
-    }
+    let current_filled_len = filled.chars().count();
+    let empty_len = width.saturating_sub(current_filled_len);
+    let empty = "░".repeat(empty_len);
     
-    bar
+    (filled, empty)
 }

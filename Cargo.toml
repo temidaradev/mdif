@@ -1,6 +1,6 @@
 [package]
 name = "wthmdif"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "written in rust, terminal-based disk usage analyzer."
 license = "MIT"
